@@ -20,9 +20,8 @@ public class ColumnDefinition {
 
 	private String pattern;
 	
-
-	
-	
+	private int displayType = -1;
+		
 	public ColumnDefinition(String name) {
 		super();
 		this.name = name;
@@ -72,8 +71,24 @@ public class ColumnDefinition {
 		this.size = size;
 		this.pattern = pattern;
 	}
-
 	
+	public ColumnDefinition(String name, String title, Class clazz, int size,
+			int displayType) {
+		super();
+		this.name = name;
+		this.title = title;
+		this.clazz = clazz;
+		this.size = size;
+		this.displayType = displayType;
+	}
+	
+	public ColumnDefinition(String name, String title, int size, int displayType) {
+		super();
+		this.name = name;
+		this.title = title;
+		this.size = size;
+		this.displayType = displayType;
+	}
 
 	/**
 	 * @return the name
@@ -146,6 +161,18 @@ public class ColumnDefinition {
 	public void setPattern(String pattern) {
 		this.pattern = pattern;
 	}
-	
-	
+
+	/**
+	 * @return the displayType
+	 */
+	public int getDisplayType() {
+		return displayType;
+	}
+
+	/**
+	 * @param displayType the displayType to set
+	 */
+	public void setDisplayType(int displayType) {
+		this.displayType = displayType;
+	}
 }
