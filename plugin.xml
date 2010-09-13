@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension-point id="org.opensixen.interfaces.IStartupProcess" name="IStartupProcess" schema="schema/org.opensixen.interfaces.IStartupProcess.exsd"/>
+
+</plugin>

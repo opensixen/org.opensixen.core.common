@@ -1,9 +1,10 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Common
-Bundle-SymbolicName: org.opensixen.core.common
+Bundle-SymbolicName: org.opensixen.core.common;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: org.opensixen.base;bundle-version="1.0.0"
-Export-Package: org.opensixen.interfaces,
+Export-Package: org.opensixen.exception,
+ org.opensixen.interfaces,
  org.opensixen.model
