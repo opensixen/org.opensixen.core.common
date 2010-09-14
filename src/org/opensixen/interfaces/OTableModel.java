@@ -11,7 +11,7 @@ import org.opensixen.model.ColumnDefinition;
  * @author harlock
  *
  */
-public interface OTableModel extends TableModel {
+public interface OTableModel extends TableModel  {
 	
 	public void reload();
 	
