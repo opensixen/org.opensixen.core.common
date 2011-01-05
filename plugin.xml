@@ -2,5 +2,23 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension-point id="org.opensixen.interfaces.IStartupProcess" name="IStartupProcess" schema="schema/org.opensixen.interfaces.IStartupProcess.exsd"/>
+   <extension
+         id="org.opensixen.model.IncotermInvoiceGenerateValidator"
+         name="org.opensixen.model.IncotermInvoiceGenerateValidator"
+         point="org.opensixen.osgi.interfaces.IDocGenerateModelValidator">
+      <validator
+            ID="org.opensixen.model.InvoiceGenerateValidator"
+            class="org.opensixen.model.IncotermInvoiceGenerateValidator">
+      </validator>
+   </extension>
+   <extension
+         id="org.opensixen.model.IncotermInOutGenerateValidator"
+         name="org.opensixen.model.IncotermInOutGenerateValidator"
+         point="org.opensixen.osgi.interfaces.IDocGenerateModelValidator">
+      <validator
+            ID="org.compiere.process.InOutGenerate"
+            class="org.opensixen.model.IncotermInOutGenerateValidator">
+      </validator>
+   </extension>
 
 </plugin>
