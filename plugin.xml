@@ -7,7 +7,7 @@
          name="org.opensixen.model.IncotermInvoiceGenerateValidator"
          point="org.opensixen.osgi.interfaces.IDocGenerateModelValidator">
       <validator
-            ID="org.opensixen.model.InvoiceGenerateValidator"
+            ID="org.compiere.process.InvoiceGenerate"
             class="org.opensixen.model.IncotermInvoiceGenerateValidator">
       </validator>
    </extension>
