@@ -164,9 +164,19 @@ public class UpdateChangeRate extends SvrProcess implements ICommand {
 						SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 						Date parsedDate = dateFormat.parse(timeNode.getNodeValue());
 						GregorianCalendar calendar = new GregorianCalendar();
-						calendar.setTime(parsedDate);
+						calendar.setTime(parsedDate);				
 						calendar.add(Calendar.HOUR, 24);
-						dataModel.setDate(new Timestamp(calendar.getTimeInMillis()));
+						dataModel.setDateFrom(new Timestamp(calendar.getTimeInMillis()));
+						// Si no es sabado, la fecha fin es la misma
+						if (calendar.get(Calendar.DAY_OF_WEEK) != Calendar.FRIDAY)	{
+							dataModel.setDateFrom(new Timestamp(calendar.getTimeInMillis()));
+						}
+						
+						// Los sabados la fecha de fin es 3 dias despues
+						else {
+							calendar.add(Calendar.HOUR, 48);
+							dataModel.setDateFrom(new Timestamp(calendar.getTimeInMillis()));
+						}
 						log.info("Time: " + timeNode.getNodeValue());
 					}
 					else {
@@ -194,39 +204,55 @@ public class UpdateChangeRate extends SvrProcess implements ICommand {
 	private void addRate(String ISOCode)	{
 		MCurrency currency = MCurrency.get(ctx, ISOCode);
 		// Primero, añadimos la tasa base -> currency
-		MConversionRate base2currency = new MConversionRate(baseCurrency, C_ConversionType_ID, baseCurrency.getC_Currency_ID()	, currency.getC_Currency_ID(), dataModel.getRate(ISOCode), dataModel.getDate());
+		MConversionRate base2currency = new MConversionRate(baseCurrency, C_ConversionType_ID, baseCurrency.getC_Currency_ID()	, currency.getC_Currency_ID(), dataModel.getRate(ISOCode), dataModel.getDateFrom());
 		log.info(base2currency.toString());
-		base2currency.setValidTo(dataModel.getDate());
+		base2currency.setValidTo(dataModel.getDateTo());
 		base2currency.save(trxName);
 		
 		// Ahora la tasa inversa
 		double dd = 1 / dataModel.getRate(ISOCode).doubleValue();
 		BigDecimal divideRate = new BigDecimal(dd);		
-		MConversionRate currency2base = new MConversionRate(currency, C_ConversionType_ID, currency.getC_Currency_ID()	, baseCurrency.getC_Currency_ID(), divideRate, dataModel.getDate());
+		MConversionRate currency2base = new MConversionRate(currency, C_ConversionType_ID, currency.getC_Currency_ID()	, baseCurrency.getC_Currency_ID(), divideRate, dataModel.getDateFrom());
 		log.info(currency2base.toString());
-		currency2base.setValidTo(dataModel.getDate());
+		currency2base.setValidTo(dataModel.getDateTo());
 		currency2base.save(trxName);				
 	}
 	
 }
 
 class RateDataModel	{
-	private Timestamp date;
+	private Timestamp dateFrom;
+	private Timestamp dateTo;
 	
 	private HashMap<String, BigDecimal> rates = new HashMap<String, BigDecimal>();
 	
+	
 	/**
-	 * @return the date
+	 * @return the dateFrom
 	 */
-	public Timestamp getDate() {
-		return date;
+	public Timestamp getDateFrom() {
+		return dateFrom;
 	}
 
 	/**
-	 * @param date the date to set
+	 * @param dateFrom the dateFrom to set
 	 */
-	public void setDate(Timestamp date) {
-		this.date = date;
+	public void setDateFrom(Timestamp dateFrom) {
+		this.dateFrom = dateFrom;
+	}
+
+	/**
+	 * @return the dateTo
+	 */
+	public Timestamp getDateTo() {
+		return dateTo;
+	}
+
+	/**
+	 * @param dateTo the dateTo to set
+	 */
+	public void setDateTo(Timestamp dateTo) {
+		this.dateTo = dateTo;
 	}
 
 	public void addRate(String currency, BigDecimal rate)	{
