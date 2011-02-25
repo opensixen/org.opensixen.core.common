@@ -27,4 +27,17 @@ public class MVOpenItem extends X_RV_OpenItem {
 		return items;
 	}
 	
+	/**
+	 * Get OpenItems for this invoice
+	 * @param ctx
+	 * @param C_Invoice_ID
+	 * @return
+	 */
+	public static List<MVOpenItem> getFromOrder(Properties ctx, int C_Order_ID)	{
+		String[] order = { COLUMNNAME_DueDate };
+		QParam[] params = { new QParam(COLUMNNAME_C_Order_ID, C_Order_ID) };
+		List<MVOpenItem> items = POFactory.getList(ctx, MVOpenItem.class, params,order, null);
+		return items;
+	}
+	
 }
