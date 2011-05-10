@@ -169,13 +169,13 @@ public class UpdateChangeRate extends SvrProcess implements ICommand {
 						dataModel.setDateFrom(new Timestamp(calendar.getTimeInMillis()));
 						// Si no es sabado, la fecha fin es la misma
 						if (calendar.get(Calendar.DAY_OF_WEEK) != Calendar.FRIDAY)	{
-							dataModel.setDateFrom(new Timestamp(calendar.getTimeInMillis()));
+							dataModel.setDateTo(new Timestamp(calendar.getTimeInMillis()));
 						}
 						
 						// Los sabados la fecha de fin es 3 dias despues
 						else {
 							calendar.add(Calendar.HOUR, 48);
-							dataModel.setDateFrom(new Timestamp(calendar.getTimeInMillis()));
+							dataModel.setDateTo(new Timestamp(calendar.getTimeInMillis()));
 						}
 						log.info("Time: " + timeNode.getNodeValue());
 					}
