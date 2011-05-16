@@ -202,17 +202,22 @@ public class UpdateChangeRate extends SvrProcess implements ICommand {
 	 * @param currency
 	 */
 	private void addRate(String ISOCode)	{
+		BigDecimal rate = dataModel.getRate(ISOCode);
 		MCurrency currency = MCurrency.get(ctx, ISOCode);
 		// Primero, añadimos la tasa base -> currency
-		MConversionRate base2currency = new MConversionRate(baseCurrency, C_ConversionType_ID, baseCurrency.getC_Currency_ID()	, currency.getC_Currency_ID(), dataModel.getRate(ISOCode), dataModel.getDateFrom());
+		MConversionRate base2currency = new MConversionRate(baseCurrency, C_ConversionType_ID, baseCurrency.getC_Currency_ID()	, currency.getC_Currency_ID(), rate, dataModel.getDateFrom());
 		log.info(base2currency.toString());
 		base2currency.setValidTo(dataModel.getDateTo());
 		base2currency.save(trxName);
 		
 		// Ahora la tasa inversa
-		double dd = 1 / dataModel.getRate(ISOCode).doubleValue();
-		BigDecimal divideRate = new BigDecimal(dd);		
+		double dd = 1 / rate.doubleValue();
+		BigDecimal divideRate = new BigDecimal(dd);
 		MConversionRate currency2base = new MConversionRate(currency, C_ConversionType_ID, currency.getC_Currency_ID()	, baseCurrency.getC_Currency_ID(), divideRate, dataModel.getDateFrom());
+		
+		// Sobreescribimos el divideRate puesto que sabemos exactamente el que es
+		currency2base.setDivideRate(rate);
+
 		log.info(currency2base.toString());
 		currency2base.setValidTo(dataModel.getDateTo());
 		currency2base.save(trxName);				
