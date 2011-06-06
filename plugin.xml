@@ -20,5 +20,13 @@
             class="org.opensixen.model.IncotermInOutGenerateValidator">
       </validator>
    </extension>
+   <extension
+         id="org.opensixen.model.TaxFactory"
+         name="org.opensixen.model.TaxFactory"
+         point="org.opensixen.osgi.interfaces.ITaxFactory">
+      <taxFactory
+            class="org.opensixen.model.TaxFactory">
+      </taxFactory>
+   </extension>
 
 </plugin>
