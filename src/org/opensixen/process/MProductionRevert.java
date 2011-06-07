@@ -38,6 +38,7 @@ public class MProductionRevert extends SvrProcess {
 		n_production.save();
 		
 		c_production.setDescription( c_production.getDescription() + " -> voided ");
+		c_production.set_ValueOfColumn("IsReverted", "Y");
 		c_production.save();
 
 		
