@@ -28,5 +28,32 @@
             class="org.opensixen.model.TaxFactory">
       </taxFactory>
    </extension>
+   <extension
+         point="org.opensixen.osgi.interfaces.IStatusBarTrxInfo">
+      <service
+            class="org.opensixen.grid.OrderTrxInfo"
+            tableName="C_Order">
+      </service>
+      <service
+            class="org.opensixen.grid.InvoiceTrxInfo"
+            tableName="C_Invoice">
+      </service>
+      <service
+            class="org.opensixen.grid.OrderTrxInfo"
+            tableName="C_OrderLine">
+      </service>
+      <service
+            class="org.opensixen.grid.InvoiceTrxInfo"
+            tableName="C_InvoiceLine">
+      </service>
+      <service
+            class="org.opensixen.grid.OrderTrxInfo"
+            tableName="C_OrderTax">
+      </service>
+      <service
+            class="org.opensixen.grid.InvoiceTrxInfo"
+            tableName="C_InvoiceTax">
+      </service>
+   </extension>
 
 </plugin>
