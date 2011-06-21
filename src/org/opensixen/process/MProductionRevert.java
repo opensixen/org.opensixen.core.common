@@ -3,12 +3,11 @@ package org.opensixen.process;
 import java.util.List;
 
 import org.compiere.model.PO;
-import org.compiere.model.X_M_Production;
 import org.compiere.model.X_M_ProductionLine;
 import org.compiere.model.X_M_ProductionPlan;
 import org.compiere.process.M_Production_Run;
 import org.compiere.process.SvrProcess;
-import org.compiere.util.Trx;
+import org.opensixen.model.MProduction;
 import org.opensixen.model.POFactory;
 import org.opensixen.model.QParam;
 
@@ -26,16 +25,33 @@ public class MProductionRevert extends SvrProcess {
 
 	@Override
 	protected String doIt() throws Exception {		
+		MProduction production = createRevert(p_Record_ID);		
 		
+		// Revert production order
+		M_Production_Run productionRun = new M_Production_Run();
+		productionRun.runStandalone(getCtx(), production.getM_Production_ID(), true, get_TrxName());
+		return null;
+		
+	}
+	
+	/**
+	 * Create a MProduction whith the same values of M_Production_ID
+	 * but inversed
+	 * @param M_Production_ID
+	 * @return
+	 */
+	private MProduction createRevert(int M_Production_ID)	{
 		// Production header
-		X_M_Production c_production = new X_M_Production(getCtx(), p_Record_ID, get_TrxName());
-		X_M_Production n_production = new X_M_Production(getCtx(),0 , get_TrxName());		
-		PO.copyValues(c_production, n_production);
+		MProduction c_production = new MProduction(getCtx(), M_Production_ID, get_TrxName());
+		MProduction n_production = MProduction.copyFrom(getCtx(), c_production, get_TrxName());
+
 		
+		n_production.set_ValueOfColumn("IsReverted", "Y");
 		n_production.setDescription("void ->" +c_production.getDescription());	
 		// Unprocessed
 		n_production.setProcessed(false);
 		n_production.save();
+		
 		
 		c_production.setDescription( c_production.getDescription() + " -> voided ");
 		c_production.set_ValueOfColumn("IsReverted", "Y");
@@ -63,7 +79,8 @@ public class MProductionRevert extends SvrProcess {
 			newLine.save();
 		}
 		
-		return null;
+
+		return n_production;
 	}
 
 }
