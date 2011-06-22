@@ -126,8 +126,10 @@ public abstract class DocLineTrxInfo implements IStatusBarTrxInfo {
 			taxAmt = taxAmt.add(taxLine.getTaxAmt());
 		}
 		BigDecimal grandTotal = totalAmt.add(taxAmt);
-		BigDecimal convTotalAmt = totalAmt;
-					
+		
+		
+		BigDecimal convTotalAmt = grandTotal;			
+		// If different currency
 		if (doc.getC_Currency_ID() != ctx_C_Currency_ID)	{		
 			// Delegate conversion to sql function
 			// currencyconvert(p_amount, p_curfrom_id , p_curto_id , p_convdate , p_conversiontype_id, p_client_id , p_org_id)
